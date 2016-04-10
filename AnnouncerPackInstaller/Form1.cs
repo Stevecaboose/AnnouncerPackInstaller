@@ -25,7 +25,7 @@ namespace AnnouncerPackInstaller
         private void dirSelectBtn_Click(object sender, EventArgs e)
         {
 
-            //Button asks for directory location and saves it in the dir var and puts that value on the textbox
+            //Button asks for directory location and saves it in the dir var and puts that value on the textbox.
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
