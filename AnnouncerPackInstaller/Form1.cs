@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -11,11 +12,15 @@ namespace AnnouncerPackInstaller
     public partial class formMain : Form
     {
         //Globals
-        string Leaguedir;
-        string AnnouncerPackdir;
-        const string wpkFileName = "Announcer_Global_Female1_VO_audio.wpk*";
-        string[] wpkDir;
-        string exeDir = Directory.GetCurrentDirectory();
+        string Leaguedir; // league of legends dir
+        string AnnouncerPackdir; //Stores the dir of the new wpk file
+        const string wpkFileName = "Announcer_Global_Female1_VO_audio.wpk";
+        string[] wpkDir; // dir of the origonal wpk in the league of legends folder
+        string exeDir = Directory.GetCurrentDirectory(); // dir of the exe
+
+        
+        /// ////////////////////////////////////////////////////
+        
 
         public formMain()
         {
@@ -57,24 +62,6 @@ namespace AnnouncerPackInstaller
 
 
 
-            //try
-            //{
-            //    // Only get files that begin with the letter "c."
-            //    string[] dirs = Directory.GetFiles(@"c:\", "c*", SearchOption.AllDirectories);
-            //    Console.WriteLine("The number of files starting with c is {0}.", dirs.Length);
-            //    foreach (string dir in dirs)
-            //    {
-            //        Console.WriteLine(dir);
-            //    }
-            //}
-            //catch (Exception b)
-            //{
-            //    Console.WriteLine("The process failed: {0}", b.ToString());
-            //}
-
-
-
-
             try
             {
 
@@ -113,6 +100,7 @@ namespace AnnouncerPackInstaller
                 findWPKStatusLabel.Text = "Error finding file";
                 
             }
+          
         }
 
         private void backupCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -134,33 +122,60 @@ namespace AnnouncerPackInstaller
                 {
 
                     //Check if the directory exits
-                    if (Directory.Exists(exeDir + "wpk_backup"))
+                    if (Directory.Exists(exeDir + "\\wpk_backup"))
                     {
                         Console.WriteLine("Directory already exists");
+                        System.IO.File.Copy(wpkDir[0], exeDir + "\\wpk_backup\\" + wpkFileName, true);
+                        backupLabel.ForeColor = Color.LimeGreen;
+                        backupLabel.Text = "Backup successful";
 
                     }//If not, then create it
                     else {
-                        System.IO.Directory.CreateDirectory(exeDir + "wpk_backup");
-                        System.IO.File.Copy(AnnouncerPackdir, exeDir, true);
+                        Console.WriteLine("Directory does not exsist. Making directory...");
+                    
+                        System.IO.Directory.CreateDirectory(exeDir + "\\wpk_backup");
+                        System.IO.File.Copy(wpkDir[0] , exeDir + "\\wpk_backup\\" + wpkFileName, true);
+                        backupLabel.ForeColor = Color.LimeGreen;
+                        backupLabel.Text = "Backup successful";
                     }
                 }
 
                 }catch(Exception ex)
             {
-                Console.WriteLine("Backup folder creation faled because of {0}", ex.ToString());
-                
+                Console.WriteLine("Backup folder creation failed because of {0}", ex.ToString());
+                backupLabel.Text = "Error backing up folder";
+                MessageBox.Show("Backup folder creation failed because of {0}", ex.ToString());
+
             }
 
             
             // If the checkbox is not checked, then just copy the new wpk to the old
 
             System.IO.File.Copy(AnnouncerPackdir, wpkDir[0], true);
-            
+            installStatusLabel.ForeColor = Color.LimeGreen;
+            installStatusLabel.Text = "Announcer pack successfully installed";
+
         }
 
         private void AnnouncerPacktxtbox_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void findWPKStatusLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void installStatusLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void urlLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            this.urlLinkLabel.LinkVisited = true;
+            System.Diagnostics.Process.Start("https://drive.google.com/open?id=0B-kHaYkqfUzIdnJuMmt4bzdBc2c");
         }
     }
 }

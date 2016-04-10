@@ -8,9 +8,9 @@ namespace AnnouncerPackInstaller
 {
     static class Program
     {
-        /// <summary>
+        /// <ENTRY>
         /// The main entry point for the application.
-        /// </summary>
+        
         [STAThread]
         static void Main()
         {
@@ -18,5 +18,6 @@ namespace AnnouncerPackInstaller
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new formMain());
         }
+        /// </ENTRY>
     }
 }
