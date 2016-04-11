@@ -18,9 +18,12 @@ namespace AnnouncerPackInstaller
         string[] wpkDir; // dir of the origonal wpk in the league of legends folder
         string exeDir = Directory.GetCurrentDirectory(); // dir of the exe
 
-        
+        FileStream fs;
+
+        private bool install_suc = true;
+
         /// ////////////////////////////////////////////////////
-        
+
 
         public formMain()
         {
@@ -124,36 +127,62 @@ namespace AnnouncerPackInstaller
                     //Check if the directory exits
                     if (Directory.Exists(exeDir + "\\wpk_backup"))
                     {
+
+
                         Console.WriteLine("Directory already exists");
-                        System.IO.File.Copy(wpkDir[0], exeDir + "\\wpk_backup\\" + wpkFileName, true);
+
+                       System.IO.File.Create(exeDir + "\\wpk_backup\\" + wpkFileName);
+
+                        
+
+
+                        
                         backupLabel.ForeColor = Color.LimeGreen;
                         backupLabel.Text = "Backup successful";
+                        
 
                     }//If not, then create it
                     else {
                         Console.WriteLine("Directory does not exsist. Making directory...");
-                    
+
                         System.IO.Directory.CreateDirectory(exeDir + "\\wpk_backup");
-                        System.IO.File.Copy(wpkDir[0] , exeDir + "\\wpk_backup\\" + wpkFileName, true);
+
+                        Console.WriteLine("Made backup directory");
+
+                        System.IO.File.Copy(wpkDir[0], exeDir + "\\wpk_backup\\" + wpkFileName, true);
+                        
+
+                        Console.WriteLine("Copied file");
+                        
+                        
                         backupLabel.ForeColor = Color.LimeGreen;
                         backupLabel.Text = "Backup successful";
+                        Console.WriteLine("Backup successful");
+                        
+                        
                     }
                 }
 
                 }catch(Exception ex)
-            {
-                Console.WriteLine("Backup folder creation failed because of {0}", ex.ToString());
-                backupLabel.Text = "Error backing up folder";
-                MessageBox.Show("Backup folder creation failed because of {0}", ex.ToString());
+                {
+                    string except = ex.ToString();
+                    Console.WriteLine("Backup folder creation failed because of {0}", except);
+                    backupLabel.Text = "Error backing up folder";
+                    MessageBox.Show("Backup folder creation failed because of " + except);
+
 
             }
 
+
+            // Copy the new wpk to the old
+
             
-            // If the checkbox is not checked, then just copy the new wpk to the old
+
 
             System.IO.File.Copy(AnnouncerPackdir, wpkDir[0], true);
             installStatusLabel.ForeColor = Color.LimeGreen;
             installStatusLabel.Text = "Announcer pack successfully installed";
+            Console.WriteLine("Announcer pack successfully installed");
 
         }
 
